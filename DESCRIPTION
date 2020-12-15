@@ -1,0 +1,15 @@
+Package: rcca
+Title: Sparse Canonical Correlation Analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Michael",
+           family = "Komodromos",
+           role = c("aut", "cre"),
+           email = "mk1019@imperial.ac.uk",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: TBD
+License: use_mit_license()
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
