@@ -19,7 +19,7 @@ sCCA <- function(X1, X2, l1, l2, iteration=1000, threshold=1e-6) {
 	# w2
 	w2.old <- w2
 	u <- t(X2) %*% X1 %*% w1 
-	D2 <- ifelse(l1.norm(w2) <= l1, 0, sCCA.binary_search(u , l2))
+	D2 <- ifelse(l1.norm(w2) <= l2, 0, sCCA.binary_search(u , l2))
 	w2 <- normalise.vect(soft.thresh(u, D2))
 	
 	# exit the loop if converged
