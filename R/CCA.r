@@ -1,17 +1,7 @@
-#
-#
-library(mvtnorm)
-
-# test data
-corrXY <- mvtnorm::rmvnorm(50, rep(0, 4), matrix(rep(2, 16), nrow=4))
-X <- cbind(corrXY[ , 1:2], mvtnorm::rmvnorm(50, rep(0, 146)))
-Y <- cbind(corrXY[ , 3:4], mvtnorm::rmvnorm(50, rep(0, 100)))
-
-res <- sCCA(X, Y, 50, 50)
-
 #' Sparse CCA
 #'
 #' @return List of weights w1, w2
+#' @export
 sCCA <- function(X1, X2, l1, l2, iteration=1000, threshold=1e-6) {
     w1 <- double(length=ncol(X1))
     w2 <- double(length=ncol(X2))
@@ -69,27 +59,3 @@ sCCA.binary_search <- function(v, l, iteration=150) {
 
     return((d.upper - d.lower) / 2)
 }
-
-soft.thresh <- function(a, b) {
-    return(sign(a) * pmax(0, abs(a) - b))
-}
-
-
-l2.norm <- function(x) {
-    if (!is.matrix(x)) {
-	x <- as.matrix(x)
-    }
-    return(norm(x, type="F"))
-}
-
-l1.norm <- function(x) {
-    if (!is.matrix(x)) {
-	x <- as.matrix(x)
-    }
-    return(norm(x, type="O"))
-}
-
-normalise.vect <- function(x) {
-    return(x / l2.norm(x))
-}
-
