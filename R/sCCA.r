@@ -1,18 +1,19 @@
 #' Sparse CCA
+#'
 #' @param X1, X2 datasets
 #' @param l1, l2 
 #' @return List of weights w1, w2
+#'
 #' @references
 #' Witten D. M., Tibshirani R.,  and Hastie, T. (2009)
 #' \emph{A penalized matrix decomposition, with applications to sparse principal components and canonical correlation analysis}, \emph{Biostatistics, Gol 10 (3), 515-534, Jul 2009}\cr
 #' @export sCCA
 sCCA <- function(X1, X2, l1, l2, iteration=1000, threshold=1e-6) {
     w1 <- double(length=ncol(X1))
-    w2 <- double(length=ncol(X2))
-    
     # initalise w2 to be a random vector with L2-norm equal to 1
     w2 <- normalise.vect(runif(ncol(X2)))
     
+    # txtProgressBar() 
     while (iteration) {
 	# w1
 	w1.old <- w1
@@ -52,7 +53,7 @@ sCCA.binary_search <- function(v, l, iteration=150) {
 
     while (iteration) {
 	w <- normalise.vect(soft.thresh(v, (d.upper + d.lower) / 2))
-	if (l1.norm(w) < l) {
+	if (l1.norm(w) > l) {
 	   d.lower <-  (d.lower + d.upper) / 2
 	} else {
 	   d.upper <-  (d.lower + d.upper) / 2
