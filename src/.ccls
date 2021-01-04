@@ -1,0 +1,8 @@
+clang
+
+%c -std=c11
+%cpp -std=c++2a
+%h -x c++-header
+-I/home/michael/.local/lib/R/x86_64-pc-linux-gnu-library/4.0/Rcpp/include/
+-I/home/michael/.local/lib/R/x86_64-pc-linux-gnu-library/4.0/RcppArmadillo/include/
+-I/usr/include/R
