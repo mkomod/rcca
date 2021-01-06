@@ -27,24 +27,25 @@ sCCA(arma::mat X1, arma::mat X2, double l1, double l2,
 {
     double d1 = 0.0;
     double d2 = 0.0;
-    arma::colvec w1 = arma::colvec(X1.n_cols, arma::fill::zeros);
-    arma::colvec w2 = normalise(arma::colvec(X2.n_cols, arma::fill::randu));
+    const arma::mat B = X1.t() * X2;
+    arma::mat U; arma::mat V; arma::vec s;
+    arma::svd(U, s, V, B);
+    arma::colvec w1 = U.col(1) / arma::norm(X1 * U.col(1));
+    arma::colvec w2 = V.col(1) / arma::norm(X2 * V.col(1));
     arma::colvec u = arma::colvec(X1.n_cols, arma::fill::zeros);
     arma::colvec v = arma::colvec(X2.n_cols, arma::fill::zeros);
     arma::colvec w1_old = w1;
     arma::colvec w2_old = w2;
 
-    arma::mat V = X1.t() * X2;
-    arma::mat U = X2.t() * X1;
     
     for (int i = 0; i < niter; ++i) {
 	w1_old = w1;
-	v =  V * w2;
+	v =  B * w2;
 	d1 = norm(v, 1) <= l1 ? 0 : binary_search(v, l1);
 	w1 = arma::normalise(soft_threshold(v, d1));
     
 	w2_old = w2;
-	u = U * w1;
+	u = B.t() * w1;
 	d2 = norm(u, 1) <= l2 ? 0 : binary_search(u, l2);
 	w2 = arma::normalise(soft_threshold(u, d2));
 
