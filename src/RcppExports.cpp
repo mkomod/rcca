@@ -22,6 +22,41 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rCCA
+Rcpp::List rCCA(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter, double threshold, bool verbose);
+RcppExport SEXP _rcca_rCCA(SEXP X1SEXP, SEXP X2SEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP niterSEXP, SEXP thresholdSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X1(X1SEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X2(X2SEXP);
+    Rcpp::traits::input_parameter< double >::type l1(l1SEXP);
+    Rcpp::traits::input_parameter< double >::type l2(l2SEXP);
+    Rcpp::traits::input_parameter< u_int >::type niter(niterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(rCCA(X1, X2, l1, l2, niter, threshold, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rCCA_opt
+arma::colvec rCCA_opt(arma::mat X, arma::colvec w, arma::colvec c, double mu, double lambda, double l, u_int niter, double threshold);
+RcppExport SEXP _rcca_rCCA_opt(SEXP XSEXP, SEXP wSEXP, SEXP cSEXP, SEXP muSEXP, SEXP lambdaSEXP, SEXP lSEXP, SEXP niterSEXP, SEXP thresholdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::colvec >::type w(wSEXP);
+    Rcpp::traits::input_parameter< arma::colvec >::type c(cSEXP);
+    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+    Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< double >::type l(lSEXP);
+    Rcpp::traits::input_parameter< u_int >::type niter(niterSEXP);
+    Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
+    rcpp_result_gen = Rcpp::wrap(rCCA_opt(X, w, c, mu, lambda, l, niter, threshold));
+    return rcpp_result_gen;
+END_RCPP
+}
 // binary_search
 double binary_search(arma::colvec v, double l, u_int niter, double threshold);
 RcppExport SEXP _rcca_binary_search(SEXP vSEXP, SEXP lSEXP, SEXP niterSEXP, SEXP thresholdSEXP) {
@@ -51,6 +86,8 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcca_sCCA", (DL_FUNC) &_rcca_sCCA, 6},
+    {"_rcca_rCCA", (DL_FUNC) &_rcca_rCCA, 7},
+    {"_rcca_rCCA_opt", (DL_FUNC) &_rcca_rCCA_opt, 8},
     {"_rcca_binary_search", (DL_FUNC) &_rcca_binary_search, 4},
     {"_rcca_soft_threshold", (DL_FUNC) &_rcca_soft_threshold, 2},
     {NULL, NULL, 0}
