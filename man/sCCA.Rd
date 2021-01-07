@@ -28,16 +28,33 @@ rCCA(
 )
 }
 \arguments{
-\item{X1, X2:}{Matrices of covariates.}
+\item{X1, X2}{Matrices of covariates.}
 
-\item{l1, l2:}{Penalisation terms.}
+\item{l1, l2}{Penalisation terms.}
+
+\item{K}{Number of canonical vector pairs.}
 
 \item{niter}{Number of iterations to run algorithm for (default = 1000).}
 
-\item{threshold:}{Stopping criterea threshold (default = 1e-6).}
+\item{threshold}{Stopping criterea threshold (default = 1e-6).}
 
-\item{verbose:}{Print debug information.}
+\item{verbose}{Print debug information.}
+}
+\value{
+List with \code{K} canonical vectors \code{w1} and \code{w2}.
 }
 \description{
 Sparse Canonical Correlation Analysis
+}
+\examples{
+# From PMA::CCA
+u <- matrix(c(rep(1,25),rep(0,75)),ncol=1)
+v1 <- matrix(c(rep(1,50),rep(0,450)),ncol=1)
+v2 <- matrix(c(rep(0,50),rep(1,50),rep(0,900)),ncol=1)
+X1 <- u\%*\%t(v1) + matrix(rnorm(100*500),ncol=500)
+X2 <- u\%*\%t(v2) + matrix(rnorm(100*1000),ncol=1000)
+X1 <- scale(X1, T, F)
+X2 <- scale(X2, T, F)
+cca <- sCCA(X1, X2)
+
 }
