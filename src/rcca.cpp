@@ -10,28 +10,15 @@ rCCA_opt(arma::mat X, arma::colvec w, arma::colvec c, double mu,
 arma::colvec soft_threshold(arma::colvec v, double d);
 
 
-//' Computer sparse cannonical correlation vectors
-//' 
-//' @param X1 Matrix of covariates.
-//' @param X2 Matrix of covariates.
-//' @param l1 Penalisation term.
-//' @param l2 Penalisation term.
-//' @param niter Number of iterations to run algorithm for (default = 1000).
-//' @param threshold Stopping criterea threshold (default = 1e-6).
-//' 
-//' @export sCCA
 // [[Rcpp::export]]
 Rcpp::List 
-sCCA(arma::mat X1, arma::mat X2, double l1, double l2, 
-	int niter = 1000, double threshold = 1.0e-6) 
+sCCA_(arma::mat X1, arma::mat X2, double l1, double l2, arma::colvec w2,
+	u_int niter, double threshold)
 {
     double d1 = 0.0;
     double d2 = 0.0;
     const arma::mat B = X1.t() * X2;
-    arma::mat U; arma::mat V; arma::vec s;
-    arma::svd(U, s, V, B);
-    arma::colvec w1 = U.col(1) / arma::norm(X1 * U.col(1));
-    arma::colvec w2 = V.col(1) / arma::norm(X2 * V.col(1));
+    arma::colvec w1 = arma::colvec(X1.n_cols, arma::fill::zeros);
     arma::colvec u = arma::colvec(X1.n_cols, arma::fill::zeros);
     arma::colvec v = arma::colvec(X2.n_cols, arma::fill::zeros);
     arma::colvec w1_old = w1;
@@ -56,25 +43,15 @@ sCCA(arma::mat X1, arma::mat X2, double l1, double l2,
 
     return Rcpp::List::create(
 	    Rcpp::Named("w1") = w1,
-	    Rcpp::Named("w2") = w2
+	    Rcpp::Named("w2") = w2,
+	    Rcpp::Named("d") = w1.t() * X1.t() * X2 * w2
     );
 }
 
-//' Computer sparse cannonical correlation vectors via Suo 2017 method
-//' 
-//' @param X1 Matrix of covariates.
-//' @param X2 Matrix of covariates.
-//' @param l1 Penalisation term.
-//' @param l2 Penalisation term.
-//' @param niter Number of iterations to run algorithm for (default = 1000).
-//' @param threshold Stopping criterea threshold (default = 1e-6).
-//' @param verbose Print debug information.
-//' 
-//' @export
 // [[Rcpp::export]]
 Rcpp::List
-rCCA(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter = 1000,
-	double threshold = 1.0e-6, bool verbose = true)
+rCCA_(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter, 
+	double threshold, bool verbose)
 {
     std::vector<double> loss;
     arma::mat B = X1.t() * X2;
@@ -95,11 +72,16 @@ rCCA(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter = 1000,
 	if (iteration > 0 && 
 	    std::abs(loss.at(iteration) - loss.at(iteration-1)) < threshold) {
 	    if (verbose) 
-		Rcpp::Rcout << "Converged in " << iteration << "iterations";
+		Rcpp::Rcout << "Converged in " << iteration << " iterations\n" <<
+			       "Loss: " << loss.at(iteration) << "\n";
 	    break;
 	}
     }
     
+    // flip sign if largest weight negative
+    if (arma::max(w1) < 0) w1 = -w1;
+    if (arma::max(w2) < 0) w2 = -w2;
+
     return Rcpp::List::create(
 	    Rcpp::Named("w1") = w1,
 	    Rcpp::Named("w2") = w2,

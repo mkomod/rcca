@@ -6,9 +6,9 @@
 
 using namespace Rcpp;
 
-// sCCA
-Rcpp::List sCCA(arma::mat X1, arma::mat X2, double l1, double l2, int niter, double threshold);
-RcppExport SEXP _rcca_sCCA(SEXP X1SEXP, SEXP X2SEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP niterSEXP, SEXP thresholdSEXP) {
+// sCCA_
+Rcpp::List sCCA_(arma::mat X1, arma::mat X2, double l1, double l2, arma::colvec w2, u_int niter, double threshold);
+RcppExport SEXP _rcca_sCCA_(SEXP X1SEXP, SEXP X2SEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP w2SEXP, SEXP niterSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -16,15 +16,16 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::mat >::type X2(X2SEXP);
     Rcpp::traits::input_parameter< double >::type l1(l1SEXP);
     Rcpp::traits::input_parameter< double >::type l2(l2SEXP);
-    Rcpp::traits::input_parameter< int >::type niter(niterSEXP);
+    Rcpp::traits::input_parameter< arma::colvec >::type w2(w2SEXP);
+    Rcpp::traits::input_parameter< u_int >::type niter(niterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
-    rcpp_result_gen = Rcpp::wrap(sCCA(X1, X2, l1, l2, niter, threshold));
+    rcpp_result_gen = Rcpp::wrap(sCCA_(X1, X2, l1, l2, w2, niter, threshold));
     return rcpp_result_gen;
 END_RCPP
 }
-// rCCA
-Rcpp::List rCCA(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter, double threshold, bool verbose);
-RcppExport SEXP _rcca_rCCA(SEXP X1SEXP, SEXP X2SEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP niterSEXP, SEXP thresholdSEXP, SEXP verboseSEXP) {
+// rCCA_
+Rcpp::List rCCA_(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter, double threshold, bool verbose);
+RcppExport SEXP _rcca_rCCA_(SEXP X1SEXP, SEXP X2SEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP niterSEXP, SEXP thresholdSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,7 +36,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< u_int >::type niter(niterSEXP);
     Rcpp::traits::input_parameter< double >::type threshold(thresholdSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(rCCA(X1, X2, l1, l2, niter, threshold, verbose));
+    rcpp_result_gen = Rcpp::wrap(rCCA_(X1, X2, l1, l2, niter, threshold, verbose));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -85,8 +86,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcca_sCCA", (DL_FUNC) &_rcca_sCCA, 6},
-    {"_rcca_rCCA", (DL_FUNC) &_rcca_rCCA, 7},
+    {"_rcca_sCCA_", (DL_FUNC) &_rcca_sCCA_, 7},
+    {"_rcca_rCCA_", (DL_FUNC) &_rcca_rCCA_, 7},
     {"_rcca_rCCA_opt", (DL_FUNC) &_rcca_rCCA_opt, 8},
     {"_rcca_binary_search", (DL_FUNC) &_rcca_binary_search, 4},
     {"_rcca_soft_threshold", (DL_FUNC) &_rcca_soft_threshold, 2},
