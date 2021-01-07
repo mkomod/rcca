@@ -100,10 +100,6 @@ rCCA(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter = 1000,
 	}
     }
     
-    // flip sign if largest weight negative
-    if (arma::max(w1) < 0) w1 = -w1;
-    if (arma::max(w2) < 0) w2 = -w2;
-
     return Rcpp::List::create(
 	    Rcpp::Named("w1") = w1,
 	    Rcpp::Named("w2") = w2,
