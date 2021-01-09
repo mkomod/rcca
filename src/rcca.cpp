@@ -65,7 +65,7 @@ rCCA_(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter,
     for (u_int iteration = 0; iteration < niter; ++iteration) {
 	// optimise the cannonical vectors
 	w1 = rCCA_opt(X1, w1, B * w2    , mu1, 1, l1);
-	w2 = rCCA_opt(X2, w2, B.t() * w1, mu2, 1, l1);
+	w2 = rCCA_opt(X2, w2, B.t() * w1, mu2, 1, l2);
 
 	arma::mat ls = (w1.t() * B * w2);
 	loss.push_back(ls.at(0, 0));

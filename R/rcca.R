@@ -58,4 +58,3 @@ rCCA <- function(X1, X2, l1 = 0.3, l2 = 0.3, K = 1, niter = 1000,
     return(list(w1=W1, w2=W2))
 }
 
-
