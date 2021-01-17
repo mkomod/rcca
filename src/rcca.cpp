@@ -1,6 +1,7 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadillo.h>
 #include <vector>
+#include <omp.h>
 
 double binary_search(arma::colvec v, double l, u_int niter = 1000,  
 	double threshold = 1.0e-6);
@@ -113,6 +114,33 @@ rCCA_opt(arma::mat X, arma::colvec w, arma::colvec c, double mu,
 	    break;
     }
     return w;
+}
+
+// [[Rcpp::export]]
+double
+rCCA_permutation_validation(const arma::mat X1, const arma::mat X2, 
+	const double l1, const double l2,
+	const u_int permutations, const u_int niter, const double threshold, 
+	const bool verbose, const int threads)
+{
+    omp_set_num_threads(threads);
+
+    Rcpp::List res = rCCA_(X1, X2, l1, l2, niter, threshold, verbose);
+    std::vector<double> losses = res[2];
+    double loss_to_beat = losses.back();
+    if (loss_to_beat == 0)
+	return 0;
+    
+    double total = 0;
+  #pragma omp parallel for shared(X2, X1, loss_to_beat) schedule(auto) reduction(+:total)
+    for (int perm = 0; perm < permutations; ++perm) {
+	std::vector<double> losses = rCCA_(shuffle(X1, 0), X2, l1, l2, niter, 
+		threshold, verbose)[2];
+	double loss = losses.back();
+	if (loss >= loss_to_beat)
+	    total += 1.0;
+    }
+    return total / permutations;
 }
 
 // [[Rcpp::export]]
