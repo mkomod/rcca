@@ -116,6 +116,7 @@ rCCA_opt(arma::mat X, arma::colvec w, arma::colvec c, double mu,
     return w;
 }
 
+//' @export
 // [[Rcpp::export]]
 double
 rCCA_permutation_validation(const arma::mat X1, const arma::mat X2, 

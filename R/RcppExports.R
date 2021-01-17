@@ -13,6 +13,11 @@ rCCA_opt <- function(X, w, c, mu, lambda, l, niter, threshold) {
     .Call(`_rcca_rCCA_opt`, X, w, c, mu, lambda, l, niter, threshold)
 }
 
+#' @export
+rCCA_permutation_validation <- function(X1, X2, l1, l2, permutations, niter, threshold, verbose, threads) {
+    .Call(`_rcca_rCCA_permutation_validation`, X1, X2, l1, l2, permutations, niter, threshold, verbose, threads)
+}
+
 binary_search <- function(v, l, niter, threshold) {
     .Call(`_rcca_binary_search`, v, l, niter, threshold)
 }

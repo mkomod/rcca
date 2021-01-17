@@ -58,6 +58,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rCCA_permutation_validation
+double rCCA_permutation_validation(const arma::mat X1, const arma::mat X2, const double l1, const double l2, const u_int permutations, const u_int niter, const double threshold, const bool verbose, const int threads);
+RcppExport SEXP _rcca_rCCA_permutation_validation(SEXP X1SEXP, SEXP X2SEXP, SEXP l1SEXP, SEXP l2SEXP, SEXP permutationsSEXP, SEXP niterSEXP, SEXP thresholdSEXP, SEXP verboseSEXP, SEXP threadsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat >::type X1(X1SEXP);
+    Rcpp::traits::input_parameter< const arma::mat >::type X2(X2SEXP);
+    Rcpp::traits::input_parameter< const double >::type l1(l1SEXP);
+    Rcpp::traits::input_parameter< const double >::type l2(l2SEXP);
+    Rcpp::traits::input_parameter< const u_int >::type permutations(permutationsSEXP);
+    Rcpp::traits::input_parameter< const u_int >::type niter(niterSEXP);
+    Rcpp::traits::input_parameter< const double >::type threshold(thresholdSEXP);
+    Rcpp::traits::input_parameter< const bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< const int >::type threads(threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(rCCA_permutation_validation(X1, X2, l1, l2, permutations, niter, threshold, verbose, threads));
+    return rcpp_result_gen;
+END_RCPP
+}
 // binary_search
 double binary_search(arma::colvec v, double l, u_int niter, double threshold);
 RcppExport SEXP _rcca_binary_search(SEXP vSEXP, SEXP lSEXP, SEXP niterSEXP, SEXP thresholdSEXP) {
@@ -89,6 +108,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rcca_sCCA_", (DL_FUNC) &_rcca_sCCA_, 7},
     {"_rcca_rCCA_", (DL_FUNC) &_rcca_rCCA_, 7},
     {"_rcca_rCCA_opt", (DL_FUNC) &_rcca_rCCA_opt, 8},
+    {"_rcca_rCCA_permutation_validation", (DL_FUNC) &_rcca_rCCA_permutation_validation, 9},
     {"_rcca_binary_search", (DL_FUNC) &_rcca_binary_search, 4},
     {"_rcca_soft_threshold", (DL_FUNC) &_rcca_soft_threshold, 2},
     {NULL, NULL, 0}
