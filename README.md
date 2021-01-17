@@ -5,7 +5,7 @@ An R package for Sparse Canonical Correlation Analysis (CCA).
 
 ## Installation
 
-#### With `devtools`
+### With `devtools`
 
 ```
 library(devtools)
