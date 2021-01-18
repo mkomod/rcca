@@ -133,7 +133,7 @@ rCCA_permutation_validation(const arma::mat X1, const arma::mat X2,
 	return -1;
     
     double total = 0;
-  #pragma omp parallel for shared(X2, X1, loss_to_beat) schedule(auto) reduction(+:total)
+  #pragma omp parallel for shared(loss_to_beat) schedule(auto) reduction(+:total)
     for (int perm = 0; perm < permutations; ++perm) {
 	std::vector<double> losses = rCCA_(shuffle(X1, 0), X2, l1, l2, niter, 
 		threshold, verbose)[2];
