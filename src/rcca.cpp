@@ -130,7 +130,7 @@ rCCA_permutation_validation(const arma::mat X1, const arma::mat X2,
     std::vector<double> losses = res[2];
     double loss_to_beat = losses.back();
     if (loss_to_beat == 0)
-	return 0;
+	return -1;
     
     double total = 0;
   #pragma omp parallel for shared(X2, X1, loss_to_beat) schedule(auto) reduction(+:total)
