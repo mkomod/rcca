@@ -48,13 +48,15 @@ rCCA <- function(X1, X2, l1 = 0.3, l2 = 0.3, K = 1, niter = 1000,
 {
     W1 <- matrix(nrow=ncol(X1), ncol=0)
     W2 <- matrix(nrow=ncol(X2), ncol=0)
+    loss <- double(length=K)
     for (i in 1:K) {
 	res <- rCCA_(rbind(X1, t(W1) %*% t(X1) %*% X1, t(W2) %*% t(X2) %*% X1), 
 		     rbind(X2, t(W2) %*% t(X2) %*% X2, t(W1) %*% t(X1) %*% X2), 
 		    l1, l2, niter, threshold, verbose)
 	W1 <- cbind(W1, res$w1)
 	W2 <- cbind(W2, res$w2)
+	loss[i] <- res$loss[length(res$loss)]
     }
-    return(list(w1=W1, w2=W2))
+    return(list(w1=W1, w2=W2, loss=loss))
 }
 
