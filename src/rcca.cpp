@@ -57,8 +57,8 @@ rCCA_(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter,
     arma::mat B = X1.t() * X2;
     arma::mat U; arma::mat V; arma::vec s;
     arma::svd(U, s, V, B);
-    arma::colvec w1 = U.col(1) / arma::norm(X1 * U.col(1));
-    arma::colvec w2 = V.col(1) / arma::norm(X2 * V.col(1));
+    arma::colvec w1 = U.col(0) / arma::norm(X1 * U.col(0));
+    arma::colvec w2 = V.col(0) / arma::norm(X2 * V.col(0));
     arma::svd(s, X1); double mu1 = 1 / std::pow(arma::max(s), 2.0);
     arma::svd(s, X2); double mu2 = 1 / std::pow(arma::max(s), 2.0);
     
@@ -78,10 +78,6 @@ rCCA_(arma::mat X1, arma::mat X2, double l1, double l2, u_int niter,
 	}
     }
     
-    // flip sign if largest weight negative
-    if (arma::max(w1) < 0) w1 = -w1;
-    if (arma::max(w2) < 0) w2 = -w2;
-
     return Rcpp::List::create(
 	    Rcpp::Named("w1") = w1,
 	    Rcpp::Named("w2") = w2,
