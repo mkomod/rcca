@@ -20,6 +20,7 @@
 #' X2 <- scale(X2, T, F)
 #' cca <- rCCA(X1, X2)
 #' 
+#' @export
 rCCA <- function(X1, X2, l1 = 0.3, l2 = 0.3, K = 1, niter = 1000, 
 		 threshold = 1.0e-6, verbose = TRUE) 
 {
